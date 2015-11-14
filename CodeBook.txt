@@ -1,0 +1,6 @@
+# Getting and Cleaning Data Course Project
+
+summary.txt columns:
+1) number of the subject
+2) name of the activity
+3 to 516) the average of each measurement
