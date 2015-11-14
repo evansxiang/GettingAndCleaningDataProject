@@ -16,6 +16,7 @@ mergeData <- function(dirStr) {
   
   #combine the Y files
   activityNames <- read.table(paste(dirStr, "/activity_labels.txt", sep=""), sep=" ")
+  colnames(activityNames) <- c("activity", "activityname")
   
   fileName <- paste(dirStr, "/train/Y_train", ".txt", sep="")
   activities <- read.table(fileName, sep="\t")
@@ -23,9 +24,8 @@ mergeData <- function(dirStr) {
   fileName <- paste(dirStr, "/test/Y_test", ".txt", sep="")
   activities <- rbind(activities, read.table(fileName, sep="\t"))
   
-  activities <- merge(activities, activityNames, by.x = "V1", by.y = "V1", all.x=TRUE, all.y=FALSE)
-  
-  colnames(activities) <- c("activity", "activityname")
+  colnames(activities) <- c("activity")
+  activities <- join(activities, activityNames, by="activity")
   write.csv(activities, "MergedData/Y.csv", row.names=FALSE)
   
   #combine the X files
