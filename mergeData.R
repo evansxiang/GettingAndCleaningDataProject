@@ -15,14 +15,18 @@ mergeData <- function(dirStr) {
   write.table(subjects, "MergedData/subject.csv", row.names=FALSE)
   
   #combine the Y files
+  activityNames <- read.table(paste(dirStr, "/activity_labels.txt", sep=""), sep=" ")
+  
   fileName <- paste(dirStr, "/train/Y_train", ".txt", sep="")
   activities <- read.table(fileName, sep="\t")
   
   fileName <- paste(dirStr, "/test/Y_test", ".txt", sep="")
   activities <- rbind(activities, read.table(fileName, sep="\t"))
   
-  colnames(activities) <- c("activity")
-  write.table(activities, "MergedData/Y.csv", row.names=FALSE)
+  activities <- merge(activities, activityNames, by.x = "V1", by.y = "V1", all.x=TRUE, all.y=FALSE)
+  
+  colnames(activities) <- c("activity", "activityname")
+  write.csv(activities, "MergedData/Y.csv", row.names=FALSE)
   
   #combine the X files
   featureNames <- read.table(paste(dirStr, "/features.txt", sep=""), sep=" ")
